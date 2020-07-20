@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  # Bucket1:
+  #   Type: AWS::S3::Bucket
+          
+  # Bucket2:
+  #   Type: AWS::S3::Bucket
+  #   Properties:
+  #     VersioningConfiguration:
+  #       Status: Enabled
+    
+  # EmptyBucket:
+  #   Type: Custom::EmptyBucket
+  #   DependsOn:
+  #     - Bucket1
+  #     - Bucket2
+  #   Properties:
+  #     ServiceToken:
+  #       Fn::Sub: ${Function.Arn}
+  
+  Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./empty
+      Description: Empty S3 buckets
+      Handler: index.handler
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - s3:DeleteObjectVersion
+              Resource: arn:aws:s3:::*/*
+            - Effect: Allow
+              Action:
+                - s3:ListBucket
+                - s3:ListBucketVersions
+              Resource: arn:aws:s3:::*
+            - Effect: Allow
+              Action: cloudformation:ListStackResources
+              Resource:
+                Ref: AWS::StackId
+      Runtime: python3.8
+      Tags:
+        pjt: letscustom
+      Timeout: 10

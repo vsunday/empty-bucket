@@ -1,0 +1,5 @@
+export STACKNAME=$1
+aws cloudformation create-stack --template-body file://outputtemplate.yaml \
+  --stack-name $STACKNAME \
+  --timeout-in-minutes 5 \
+  --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND
