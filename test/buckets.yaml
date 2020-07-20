@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Resources:
+  Bucket1:
+    Type: AWS::S3::Bucket
+          
+  Bucket2:
+    Type: AWS::S3::Bucket
+    Properties:
+      VersioningConfiguration:
+        Status: Enabled
+    
+  EmptyBucket:
+    Type: Custom::EmptyBucket
+    DependsOn:
+      - Bucket1
+      - Bucket2
+    Properties:
+      ServiceToken:
+        Fn::ImportValue: empty-bucket

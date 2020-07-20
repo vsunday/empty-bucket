@@ -42,8 +42,16 @@ Resources:
             - Effect: Allow
               Action: cloudformation:ListStackResources
               Resource:
-                Ref: AWS::StackId
+                Fn::Sub: arn:aws:cloudformation:*:${AWS::AccountId}:stack/*
       Runtime: python3.8
       Tags:
         pjt: letscustom
       Timeout: 10
+  
+Outputs:
+  EmptyBucketFunction:
+    Description: arn of empty bucket function
+    Value:
+      Fn::Sub: ${Function.Arn}
+    Export:
+      Name: empty-bucket

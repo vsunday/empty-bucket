@@ -17,7 +17,6 @@ def empty_buckets(stackname):
   [t.join() for t in threads]
   
 def empty_bucket(bucket):
-  print(bucket)
   return [object.delete() for object in s3.Bucket(bucket).object_versions.all()]
       
 def send_response(url, responseObjects):
